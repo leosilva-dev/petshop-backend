@@ -1,3 +1,6 @@
+require('dotenv/config');
+
+
 import express from 'express';
 import { routes } from "./routes/Routes";
 
@@ -7,11 +10,16 @@ const startServer = () => {
     
     app.use(express.json());
     app.use(routes);
-    app.listen(3333);
-    
-    console.log('\n 🔥 server is runnning on port 3333')
+    app.listen(process.env.PORT || 5000);
+
+    console.log('\n 🔥 server is runnning on port '+process.env.PORT)
 
    
 }
 
-startServer()
+if (process.env.NODE_ENV === 'production') {
+    //execute migrations
+    //startServer();
+  } else {
+    startServer();
+  }
