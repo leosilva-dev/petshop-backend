@@ -1,7 +1,9 @@
-import { Router, Response } from 'express';
+import { Router } from 'express';
+import { UserController } from '../controllers';
 
 const routes = Router();
 
-routes.get('/', (_, res: Response) => res.send('Working...'));
+routes.get('/users', UserController.GetAll);
+routes.post('/users', UserController.Create);
 
 export { routes };
