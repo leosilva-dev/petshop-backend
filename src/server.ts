@@ -1,8 +1,8 @@
 require('dotenv/config');
 
-
 import express from 'express';
 import { routes } from "./routes/Routes";
+import {connectToDatabase} from './database/Database'
 
 
 const startServer = () => {
@@ -10,16 +10,14 @@ const startServer = () => {
     
     app.use(express.json());
     app.use(routes);
-    app.listen(process.env.PORT || 5000);
+    connectToDatabase();
+    app.listen(process.env.PORT || 3333);
 
-    console.log('\n 🔥 server is runnning on port '+process.env.PORT)
-
-   
+    console.log('\n 🔥 server is runnning on port '+process.env.PORT)  
 }
 
 if (process.env.NODE_ENV === 'production') {
-    //execute migrations
-    //startServer();
+    startServer();
   } else {
     startServer();
   }
