@@ -6,4 +6,4 @@ const routes = Router();
 routes.get('/users', UserController.GetAll);
 routes.post('/users', UserController.Create);
 
-export { routes };
+export { routes };                            
