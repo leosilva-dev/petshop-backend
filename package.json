@@ -5,23 +5,23 @@
   "author": "Leonardo da Silva <silvaleonardo.ti@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon ./src/server.ts",
+    "dev": "ts-node-dev ./src/server.ts",
     "build": "node build/server.ts",
     "test": "jest"
   },
   "devDependencies": {
-    "typescript": "^4.6.2"
-  },
-  "dependencies": {
+    "typescript": "^4.6.2",
     "@types/express": "^4.17.13",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^17.0.21",
+    "ts-node-dev": "^1.1.8"
+  },
+  "dependencies": {
     "celebrate": "^15.0.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "http-status-codes": "^2.2.0",
     "mongoose": "^6.2.5",
-    "nodemon": "^2.0.15",
     "ts-node": "^10.7.0"
   }
 }
