@@ -23,8 +23,8 @@ const getAll = async (_:Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
     try {
-        const {name, email, password} = req.body
-        const newUser = await new User({name, email, password})
+        const {name, email, password, username, bio} = req.body
+        const newUser = await new User({name, email, password, username, bio})
         newUser.save()
         res.status(StatusCodes.CREATED).json(newUser)
     } catch (error) {
@@ -35,8 +35,8 @@ const create = async (req: Request, res: Response) => {
 const updateById = async (req:Request, res:Response) => {
     try {
         const id = req.params.id
-        const {name, email, password} = req.body
-        const userUpdated = await User.findByIdAndUpdate(id, {name, email, password})
+        const {name, email, password, username, bio} = req.body
+        const userUpdated = await User.findByIdAndUpdate(id, {name, email, password, username, bio})
         res.status(StatusCodes.OK).json({userUpdated})
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({error:error})

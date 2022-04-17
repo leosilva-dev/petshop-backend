@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { UserController } from '../controllers';
-import {UsersValidade} from '../Middlewares/Users/UserValidate'
+import {UsersValidade} from '../Middlewares/Users/UserValidateCreate'
 
 const routes = Router();
 
