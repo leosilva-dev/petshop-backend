@@ -11,8 +11,8 @@ const app = express();
 app.use(express.json());
 app.use(routes);
 app.use(errors());
-app.listen(process.env.PORT || 3333);
-console.log('\n 🔥 server is runnning on port '+process.env.PORT)  
+app.listen(3333);
+console.log('\n> server is runnning on port 3333')  
 
     
 
