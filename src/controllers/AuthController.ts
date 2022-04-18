@@ -21,6 +21,27 @@ const login = async (req: Request, res: Response) => {
     }
 }
 
+const register = async (req: Request, res: Response) => {
+    try {
+        const {name, email, password, username, bio} = req.body
+
+        if(await User.findOne({ email })){
+          return res.status(StatusCodes.BAD_REQUEST).json({msg:'Email já cadastrado'})
+        }
+        if(await User.findOne({ username })){
+          return res.status(StatusCodes.BAD_REQUEST).json({msg:'Username já cadastrado'})
+        }
+
+        const newUser = await new User({name, email, password, username, bio})
+        newUser.save()
+
+        return res.status(StatusCodes.CREATED).json(newUser)
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({error:error})
+    }
+}
+
 export const AuthController = {
-    login
+    login,
+    register
 }

@@ -21,16 +21,16 @@ const getAll = async (_:Request, res: Response) => {
     }
 }
 
-const create = async (req: Request, res: Response) => {
-    try {
-        const {name, email, password, username, bio} = req.body
-        const newUser = await new User({name, email, password, username, bio})
-        newUser.save()
-        res.status(StatusCodes.CREATED).json(newUser)
-    } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).json({error:error})
-    }
-}
+// const create = async (req: Request, res: Response) => {
+//     try {
+//         const {name, email, password, username, bio} = req.body
+//         const newUser = await new User({name, email, password, username, bio})
+//         newUser.save()
+//         res.status(StatusCodes.CREATED).json(newUser)
+//     } catch (error) {
+//         res.status(StatusCodes.BAD_REQUEST).json({error:error})
+//     }
+// }
 
 const updateById = async (req:Request, res:Response) => {
     try {
@@ -56,7 +56,6 @@ const deleteById = async (req: Request, res: Response) => {
 export const UserController = {
     getById,
     getAll,
-    create,
     updateById,
     deleteById
 }
