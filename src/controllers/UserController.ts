@@ -14,23 +14,12 @@ const getById = async (req: Request, res: Response) => {
 
 const getAll = async (_:Request, res: Response) => {
     try {
-        const allUsers = await User.find()
+        const allUsers = await User.find().select("-password")
         res.status(StatusCodes.OK).json(allUsers)
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({error:error})
     }
 }
-
-// const create = async (req: Request, res: Response) => {
-//     try {
-//         const {name, email, password, username, bio} = req.body
-//         const newUser = await new User({name, email, password, username, bio})
-//         newUser.save()
-//         res.status(StatusCodes.CREATED).json(newUser)
-//     } catch (error) {
-//         res.status(StatusCodes.BAD_REQUEST).json({error:error})
-//     }
-// }
 
 const updateById = async (req:Request, res:Response) => {
     try {

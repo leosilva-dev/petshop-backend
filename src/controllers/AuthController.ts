@@ -32,10 +32,11 @@ const register = async (req: Request, res: Response) => {
           return res.status(StatusCodes.BAD_REQUEST).json({msg:'Username já cadastrado'})
         }
 
-        const newUser = await new User({name, email, password, username, bio})
-        newUser.save()
+        await User.create({name, email, password, username, bio})
 
-        return res.status(StatusCodes.CREATED).json(newUser)
+        const userRegistered = await User.findOne({ email}).select("-password")
+
+        return res.status(StatusCodes.CREATED).json({msg:'Usuário criado com sucesso', User: userRegistered})
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({error:error})
     }
