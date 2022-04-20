@@ -1,23 +1,28 @@
 import { StatusCodes } from "http-status-codes"
 import {Request, Response} from 'express'
 import { User } from "../models/User"
+import bcrypt from 'bcryptjs';
 
 
 const login = async (req: Request, res: Response) => {
     try {
         const {email, password} = req.body
-        const user = await User.findOne({email, password})
-        
-        
+        const user = await User.findOne({email}).select("+password")
+                
         if(!user){
-            res.status(StatusCodes.UNAUTHORIZED).json({msg:'Usuário ou senha inválidos'})
-        }else{
-            res.status(StatusCodes.OK).json({msg:'Login successful', user, token: 'JWT-123456'})
+            return res.status(StatusCodes.UNAUTHORIZED).json({msg:'Usuário ou senha inválidos'})
         }
+        
+        if(user && !await bcrypt.compare(password, user.password)){
+            return res.status(StatusCodes.UNAUTHORIZED).json({msg:'Usuário ou senha inválidos'})
+        }
+
+        const userLogged = await User.findOne({ email}).select("-password")
+        return res.status(StatusCodes.OK).json({msg:'Usuário logado com sucesso', User: userLogged})
 
 
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).json({error:error})
+        res.status(StatusCodes.BAD_REQUEST).send({error:error})
     }
 }
 
