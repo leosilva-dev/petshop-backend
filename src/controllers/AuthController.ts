@@ -1,8 +1,19 @@
 import { StatusCodes } from "http-status-codes"
 import {Request, Response} from 'express'
-import { User } from "../models/User"
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
 
+import { User } from "../models/User"
+
+dotenv.config();
+
+
+const generateToken = (id: string) => {
+    return jwt.sign({ id }, process.env.SECRET || '', {
+        expiresIn: 86400
+    })
+}
 
 const login = async (req: Request, res: Response) => {
     try {
@@ -18,7 +29,7 @@ const login = async (req: Request, res: Response) => {
         }
 
         const userLogged = await User.findOne({ email}).select("-password")
-        return res.status(StatusCodes.OK).json({msg:'Usuário logado com sucesso', User: userLogged})
+        return res.status(StatusCodes.OK).json({msg:'Usuário logado com sucesso', User: userLogged, token:generateToken(userLogged?.id)})
 
 
     } catch (error) {
@@ -41,7 +52,7 @@ const register = async (req: Request, res: Response) => {
 
         const userRegistered = await User.findOne({ email}).select("-password")
 
-        return res.status(StatusCodes.CREATED).json({msg:'Usuário criado com sucesso', User: userRegistered})
+        return res.status(StatusCodes.CREATED).json({msg:'Usuário criado com sucesso', User: userRegistered, token:generateToken(userRegistered?.id)})
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({error:error})
     }
