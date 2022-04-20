@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { UserController } from '../controllers';
-import { AuthController } from '../controllers/AuthController';
-import {auth} from '../Middlewares/auth/registerUser';
+
+import { UserController, AuthController, LinksController } from '../app/controllers';
+import {auth, authMiddleware} from '../app/Middlewares';
 
 const routes = Router();
 
@@ -12,5 +12,9 @@ routes.delete('/users/:id', UserController.deleteById);
 
 routes.post('/login', AuthController.login);
 routes.post('/register', auth.registerValidation, AuthController.register);
+
+routes.get('/hello', authMiddleware, (req, res) => {
+    return res.json({ msg: 'Hello!!!' });
+});
 
 export { routes };                            
