@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import {Request, Response} from 'express'
+
 import {User} from '../models/User'
 
 const getById = async (req: Request, res: Response) => {

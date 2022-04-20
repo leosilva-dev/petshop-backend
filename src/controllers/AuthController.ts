@@ -10,7 +10,7 @@ dotenv.config();
 
 
 const generateToken = (id: string) => {
-    return jwt.sign({ id }, process.env.SECRET || '', {
+    return jwt.sign({id}, process.env.JWT_SECRET as string, {
         expiresIn: 86400
     })
 }
@@ -51,8 +51,9 @@ const register = async (req: Request, res: Response) => {
         await User.create({name, email, password, username, bio})
 
         const userRegistered = await User.findOne({ email}).select("-password")
-
+        
         return res.status(StatusCodes.CREATED).json({msg:'Usuário criado com sucesso', User: userRegistered, token:generateToken(userRegistered?.id)})
+        
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({error:error})
     }
