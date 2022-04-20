@@ -1,17 +1,16 @@
 import { Router } from 'express';
 import { UserController } from '../controllers';
 import { AuthController } from '../controllers/AuthController';
-import {UsersValidade} from '../Middlewares/Users/UserValidateCreate'
+import {auth} from '../Middlewares/auth/registerUser';
 
 const routes = Router();
 
 routes.get('/users', UserController.getAll);
 routes.get('/users/:id', UserController.getById);
-// routes.post('/users', UsersValidade.create, UserController.create);
 routes.put('/users/:id', UserController.updateById);
 routes.delete('/users/:id', UserController.deleteById);
 
 routes.post('/login', AuthController.login);
-routes.post('/register', UsersValidade.create, AuthController.register);
+routes.post('/register', auth.registerValidation, AuthController.register);
 
 export { routes };                            

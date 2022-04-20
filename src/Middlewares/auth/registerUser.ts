@@ -1,6 +1,6 @@
 import { celebrate, Joi } from 'celebrate';
 
-const create = celebrate({
+const registerValidation = celebrate({
     body: Joi.object({
         name: Joi.string().required(),
         username: Joi.string().required(),
@@ -10,6 +10,6 @@ const create = celebrate({
     })
 }, {abortEarly: false});
 
-export const UsersValidade ={
-    create
+export const auth ={
+    registerValidation
 }
