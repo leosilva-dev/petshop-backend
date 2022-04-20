@@ -5,7 +5,7 @@
   "author": "Leonardo da Silva <silvaleonardo.ti@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev ./src/server.ts",
+    "dev": "npx nodemon --exec ts-node --files src/server.ts",
     "build": "node build/server.ts",
     "test": "jest"
   },
@@ -15,6 +15,7 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^17.0.21",
+    "nodemon": "^2.0.15",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.2"
   },
