@@ -39,7 +39,7 @@ const login = async (req: Request, res: Response) => {
 
 const register = async (req: Request, res: Response) => {
     try {
-        const {name, email, password, username, bio} = req.body
+        const {name, email, password, username} = req.body
 
         if(await User.findOne({ email })){
           return res.status(StatusCodes.BAD_REQUEST).json({msg:'Email já cadastrado'})
@@ -48,7 +48,7 @@ const register = async (req: Request, res: Response) => {
           return res.status(StatusCodes.BAD_REQUEST).json({msg:'Username já cadastrado'})
         }
 
-        await User.create({name, email, password, username, bio})
+        await User.create({name, email, password, username})
 
         const userRegistered = await User.findOne({ email}).select("-password")
         
