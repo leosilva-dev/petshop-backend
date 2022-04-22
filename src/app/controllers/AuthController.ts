@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 
+import {IRequestResult} from '../../interfaces/IRequestResult'
 import { User } from "../models/User"
 
 dotenv.config();
@@ -20,20 +21,42 @@ const login = async (req: Request, res: Response) => {
         const {email, password} = req.body
         const user = await User.findOne({email}).select("+password")
                 
+        const responseUserOrPasswordInvalid: IRequestResult = {
+            data: undefined,
+            token: undefined,
+            success: false,
+            message: 'Usuário ou senha inválidos'
+        } 
         if(!user){
-            return res.status(StatusCodes.UNAUTHORIZED).json({msg:'Usuário ou senha inválidos'})
+            return res.status(StatusCodes.UNAUTHORIZED).json(responseUserOrPasswordInvalid)
         }
         
         if(user && !await bcrypt.compare(password, user.password)){
-            return res.status(StatusCodes.UNAUTHORIZED).json({msg:'Usuário ou senha inválidos'})
+            return res.status(StatusCodes.UNAUTHORIZED).json(responseUserOrPasswordInvalid)
         }
 
-        const userLogged = await User.findOne({ email}).select("-password")
-        return res.status(StatusCodes.OK).json({msg:'Usuário logado com sucesso', User: userLogged, token:generateToken(userLogged?.id)})
+        const userLogged = await User.findOne({ email }).select("-password")
+
+        const response: IRequestResult = {
+            data: userLogged,
+            token: generateToken(userLogged?.id),
+            success: true,
+            message: 'Usuário logado com sucesso'
+        } 
+
+        return res.status(StatusCodes.OK).json(response)
 
 
-    } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send({error:error})
+    } catch {
+
+        const response: IRequestResult = {
+            data: undefined,
+            token: undefined,
+            success: false,
+            message: 'Erro ao logar usuário, tente novamente mais tarde...'
+        } 
+
+        res.status(StatusCodes.BAD_REQUEST).json(response)
     }
 }
 
@@ -52,10 +75,24 @@ const register = async (req: Request, res: Response) => {
 
         const userRegistered = await User.findOne({ email}).select("-password")
         
-        return res.status(StatusCodes.CREATED).json({msg:'Usuário criado com sucesso', User: userRegistered, token:generateToken(userRegistered?.id)})
+        const response: IRequestResult = {
+            data: userRegistered,
+            token: generateToken(userRegistered?.id),
+            success: true,
+            message: 'Usuário cadastrado com sucesso'
+        } 
+        return res.status(StatusCodes.CREATED).json(response)
         
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).json({error:error})
+
+        const response: IRequestResult = {
+            data: undefined,
+            token: undefined,
+            success: false,
+            message: 'Erro ao cadastrar usuário, tente novamente mais tarde...'
+        } 
+
+        res.status(StatusCodes.BAD_REQUEST).json(response)
     }
 }
 
