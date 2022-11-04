@@ -1,22 +1,20 @@
 import { Router } from 'express';
 
-import { UserController, AuthController, LinksController } from '../app/controllers';
-import {auth, authMiddleware} from '../app/Middlewares';
+import { ClientController, PetController} from '../app/controllers';
+import { ClientValidate, PetValidate } from '../app/Middlewares/';
 
 const routes = Router();
 
-routes.get('/user', authMiddleware, UserController.getData);
-routes.get('/users', authMiddleware, UserController.getAll);
-routes.get('/users/:id', authMiddleware, UserController.getById);
-routes.put('/users/', authMiddleware, UserController.updateById);
-routes.put('/users/:id', authMiddleware, UserController.updateById);
-routes.delete('/users/:id', authMiddleware, UserController.deleteById);
+routes.get('/clientes', ClientController.getAll)
+routes.get('/clientes/:id', ClientController.getById)
+routes.post('/clientes', ClientValidate.create, ClientController.create)
+routes.put('/clientes/:id', ClientValidate.create, ClientController.updateById)
+routes.delete('/clientes/:id', ClientController.deleteById)
 
-routes.post('/login', AuthController.login);
-routes.post('/register', auth.registerValidation, AuthController.register);
-
-routes.get('/links', authMiddleware, LinksController.getAll);
-
-routes.get('/@/:username', UserController.getProfilePublicData);
+routes.get('/pets', PetController.getAll)
+routes.get('/pets/:id', PetController.getById)
+routes.post('/pets', PetValidate.create, PetController.create)
+routes.put('/pets/:id', PetValidate.create, PetController.updateById)
+routes.delete('/pets/:id', PetController.deleteById)
 
 export { routes };                            
